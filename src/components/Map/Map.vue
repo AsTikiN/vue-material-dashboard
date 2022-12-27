@@ -65,21 +65,38 @@ export default {
     this.mapbox = Mapbox;
   },
   mounted() {
-    fetch("path.json")
+    // fetch("path.json")
+    //   .then((res) => res.json())
+    //   .then(
+    //     (data) =>
+    //       (this.geoJsonSources = data?.map((json) => ({
+    //         type: "geojson",
+    //         data: {
+    //           id: json.id,
+    //           name: json.name,
+    //           type: "Feature",
+    //           geometry: json.geom,
+    //           year: json.year,
+    //         },
+    //       })))
+    //   );
+
+    fetch("graphPath.json")
       .then((res) => res.json())
-      .then(
-        (data) =>
-          (this.geoJsonSources = data?.map((json) => ({
+      .then((data) => {
+        this.geoJsonSources = [
+          {
             type: "geojson",
             data: {
-              id: json.id,
-              name: json.name,
+              id: "someId",
+              name: "someName",
               type: "Feature",
-              geometry: json.geom,
-              year: json.year,
+              geometry: data.geometry,
+              year: "2003",
             },
-          })))
-      );
+          },
+        ];
+      });
   },
   methods: {
     handleRouteClick(e) {
@@ -95,7 +112,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.geoLayer:hover {
-  cursor: p;
-}
 </style>

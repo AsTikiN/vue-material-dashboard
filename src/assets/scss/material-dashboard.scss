@@ -47,3 +47,7 @@
 @import "md/tabs";
 @import "md/chartist";
 @import "md/responsive";
+
+.mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
+  display: none;  
+}
