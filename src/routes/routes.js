@@ -3,7 +3,7 @@ import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
 import Dashboard from "@/pages/Dashboard.vue";
 import UserProfile from "@/pages/UserProfile.vue";
 import Notifications from "@/pages/Notifications.vue";
-import Map from "@/components/Map/Map.vue";
+import Map from "@/pages/MapPage/MapPage.vue";
 
 const routes = [
   {
