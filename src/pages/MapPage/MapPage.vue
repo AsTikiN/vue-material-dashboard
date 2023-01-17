@@ -1,17 +1,25 @@
 <template>
-  <div class="mapPageWrapper">
-    <Modal :isOpen="isOpen" :handleClose="handleCloseModal">
-      <PathGraph />
-      {{activePathId}}
-    </Modal>
-    <Map @handle-open-modal="handleOpenModal" />
+  <div ref="mapWrapper">
+    <div class="mapPageWrapper" id="app">
+      <Modal :isOpen="isOpen" :handleClose="handleCloseModal" :parentWidth="$refs.mapWrapper.clientWidth">
+        <Plotly class="plotlyGraph" @hover="handleHoverGraph" :data="data" :layout="layout" :display-mode-bar="false" />
+      </Modal>
+
+      <Map
+        @handle-open-modal="handleOpenModal"
+        :isOpen="isOpen"
+        :markerX="markerCoords[0]"
+        :markerY="markerCoords[1]"
+        :center="center"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Map from "../../components/Map/Map.vue";
 import Modal from "../../components/Modal/Modal.vue";
-import PathGraph from "../../components/Graphics/PathGraph.vue";
+import { Plotly } from "vue-plotly";
 
 export default {
   name: "VueMaterialDashboardMapPage",
@@ -20,16 +28,56 @@ export default {
     return {
       isOpen: false,
       activePathId: null,
+      graphX: [],
+      graphY: [],
+      mapTrace: {},
+      markerCoords: [6.040129727, 51.415623313],
+      center: [6.040129727, 51.415623313],
+      layout: {
+        xaxis: {
+          title: "Afstand(m)",
+        },
+        yaxis: {
+          title: "Z-coordinaat(m)",
+        },
+      },
     };
   },
 
   components: {
     Map,
     Modal,
-    PathGraph,
+    // PathGraph,
+    Plotly,
   },
 
-  mounted() {},
+  mounted() {
+    fetch("graphPath.json")
+      .then((res) => res.json())
+      .then((data) => {
+        this.graphX = data.graph.distance;
+        this.graphY = data.graph.z;
+        this.mapTrace = data.map_trace;
+      });
+  },
+
+  updated() {
+    console.log();
+  },
+
+  computed: {
+    data() {
+      return [
+        {
+          x: this.graphX,
+          y: this.graphY,
+          type: "scatter",
+          mode: "lines",
+          line: { color: "#7F7F7F" },
+        },
+      ];
+    },
+  },
 
   methods: {
     handleOpenModal(pathId) {
@@ -41,6 +89,18 @@ export default {
       this.isOpen = false;
       this.activePathId = null;
     },
+
+    handleClickModal(geom) {
+      if (geom?.coordinates) this.center = [geom.coordinates[0], geom.coordinates[1]];
+    },
+
+    setGraphHoverGeometry(geom) {
+      if (geom?.coordinates) this.markerCoords = [geom.coordinates[0], geom.coordinates[1]];
+    },
+
+    handleHoverGraph(e) {
+      this.setGraphHoverGeometry(this.mapTrace[e.points[0].x]);
+    },
   },
 };
 </script>
@@ -48,5 +108,10 @@ export default {
 <style lang="scss" scoped>
 .mapPageWrapper {
   position: relative;
+  overflow: hidden;
+}
+
+.plotlyGraph {
+  height: 100%;
 }
 </style>

@@ -1,65 +1,90 @@
 <template>
-  <div v-if="isOpen" class="modalWrapper">
-    <div class="modelActions">
-      <div class="modalClose" @click="handleClose" />
+  <VueDragResize
+    v-if="isOpen"
+    :isActive="isOpen"
+    h="430"
+    w="600"
+    v-on:resizing="resize"
+    :parentLimitation="true"
+    v-on:dragging="resize"
+    :style="{ zIndex: 10 }"
+  >
+    <div class="modalWrapper">
+      <div class="modelActions">
+        <div class="modalTitle">Hoogte profiel</div>
+        <div class="modalClose" @click="handleClose" />
+      </div>
+      <slot class="modalContent"></slot>
     </div>
-    <slot></slot>
-  </div>
+  </VueDragResize>
 </template>
 
 <script>
+import VueDragResize from "vue-drag-resize";
+
 export default {
   name: "Modal",
 
   props: {
     isOpen: Boolean,
-    positionX: {
-      type: Number,
-      default: 0,
-    },
-    positionY: {
-      type: Number,
-      default: 0,
-    },
     handleClose: Function,
   },
 
   data() {
-    return {};
+    return {
+      width: 0,
+      height: 0,
+      top: 0,
+      left: 0,
+    };
   },
 
-  mounted() {},
+  components: {
+    VueDragResize,
+  },
 
-  computed: {
-    cssVars() {
-      return {
-        "--modal-x": this.positionX + "px",
-        "--modal-y": this.positionY + "px",
-      };
+  mounted() {
+    console.log(this.$refs);
+  },
+
+  methods: {
+    resize(newRect) {
+      this.width = newRect.width;
+      this.height = newRect.height;
+      this.top = newRect.top;
+      this.left = newRect.left;
     },
   },
-
-  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
 .modalWrapper {
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 100;
-  width: 400px;
-  max-width: 95%;
-  background-color: grey;
-  padding: 10px;
+  background-color: #fff;
   color: #fff;
+  height: 100%;
+  cursor: grab;
+  overflow: hidden;
+  border-radius: 0 0 10px 10px;
+}
+
+.modalWrapper:active {
+  cursor: grabbing;
 }
 
 .modelActions {
   display: flex;
-  justify-content: flex-end;
-  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: #152032;
+  height: 60px;
+  border-radius: 10px 10px 0 0;
 }
 
 .modalClose {
@@ -76,7 +101,7 @@ export default {
     content: "";
     width: 20px;
     height: 3px;
-    background-color: white;
+    background-color: #fff;
     position: absolute;
     border-radius: 5px;
   }
@@ -88,5 +113,10 @@ export default {
   &:after {
     transform: rotate(-45deg);
   }
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 400;
 }
 </style>
