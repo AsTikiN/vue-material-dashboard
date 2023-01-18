@@ -2,13 +2,6 @@
   <div class="mapWrapper">
     <MglMap ref="mapRef" id="map" :center="center" :zoom="10" :accessToken="accessToken" :mapStyle="mapStyle">
       <MglMarker v-if="isOpen" :coordinates="[markerX || 6.040129727, markerY || 51.415623313]" color="blue" />
-      <!-- 
-      <MglPopup>
-        <VCard>
-        <div>Hello, I'm popup!</div>
-        </VCard>
-      </MglPopup>
-      </MglMarker>-->
       <MglGeojsonLayer
         class="geoLayer"
         @click="handleRouteClick"
@@ -68,28 +61,21 @@ export default {
     this.mapbox = Mapbox;
   },
   mounted() {
-    fetch("graphPath.json")
+    fetch("path.json")
       .then((res) => res.json())
       .then((data) => {
-        this.geoJsonSources = [
-          {
-            type: "geojson",
-            data: {
-              id: "someId",
-              name: "someName",
-              type: "Feature",
-              geometry: data.geometry,
-              year: "2003",
-            },
+        this.geoJsonSources = data.map((geo) => ({
+          type: "geojson",
+          data: {
+            id: geo.id,
+            name: geo.name,
+            type: "Feature",
+            geometry: geo.geom,
+            year: geo.year,
           },
-        ];
+        }));
+        console.log(this.geoJsonSources[0].data);
       });
-  },
-  updated() {},
-  computed: {
-    // newX() {
-    //   return this.$refs.mapRef.center;
-    // }
   },
   methods: {
     handleRouteClick(e) {
@@ -98,10 +84,8 @@ export default {
         zoom: 12,
         speed: 2,
       });
+      console.log(e.layerId);
       this.$emit("handle-open-modal", e.layerId);
-    },
-    hc() {
-      // this.markerX += 1;
     },
   },
 };
