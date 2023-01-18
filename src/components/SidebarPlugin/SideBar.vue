@@ -1,10 +1,18 @@
 <template>
   <div
-    class="sidebar"
+    :class="{hide: !$sidebar.showSidebar, sidebar: true} "
     :data-color="sidebarItemColor"
     :data-image="sidebarBackgroundImage"
     :style="sidebarStyle"
   >
+    <md-button
+      class="md-just-icon md-simple md-toolbar-toggle toggled"
+      @click="toggleSidebar"
+    >
+      <span class="icon-bar">10</span>
+      <span class="icon-bar">10</span>
+      <span class="icon-bar">10</span>
+    </md-button>
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
@@ -71,7 +79,7 @@ export default {
     },
     autoClose: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   provide() {
@@ -86,6 +94,11 @@ export default {
       };
     },
   },
+  methods: {
+    toggleSidebar() {
+      this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+    },  
+  }
 };
 </script>
 <style>

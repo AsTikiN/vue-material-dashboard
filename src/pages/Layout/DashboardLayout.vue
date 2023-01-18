@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
+  <div class="wrapper nav-open">
     <notifications></notifications>
 
     <side-bar
@@ -17,7 +17,7 @@
       </sidebar-link>
     </side-bar>
 
-    <div class="main-panel">
+    <div :class='{ "main-panel": true, "full-width": !$sidebar.showSidebar }'>
       <top-navbar></top-navbar>
 
       <dashboard-content> </dashboard-content>

@@ -1,7 +1,7 @@
 <template>
   <div ref="mapWrapper">
     <div class="mapPageWrapper" id="app">
-      <Modal :isOpen="isOpen" :handleClose="handleCloseModal" :parentWidth="$refs.mapWrapper.clientWidth">
+      <Modal :isOpen="isOpen" :handleClose="handleCloseModal">
         <Plotly class="plotlyGraph" @hover="handleHoverGraph" :data="data" :layout="layout" :display-mode-bar="false" />
       </Modal>
 

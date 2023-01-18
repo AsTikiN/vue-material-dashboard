@@ -2,7 +2,7 @@ import Sidebar from "./SideBar.vue";
 import SidebarLink from "./SidebarLink.vue";
 
 const SidebarStore = {
-  showSidebar: false,
+  showSidebar: true,
   displaySidebar(value) {
     this.showSidebar = value;
   },
