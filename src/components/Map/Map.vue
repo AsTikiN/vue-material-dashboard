@@ -84,7 +84,6 @@ export default {
         zoom: 12,
         speed: 2,
       });
-      console.log(e.layerId);
       this.$emit("handle-open-modal", e.layerId);
     },
   },

@@ -1,16 +1,22 @@
 <template>
   <div>
     <md-table v-model="users" :table-header-color="tableHeaderColor">
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Country">{{ item.country }}</md-table-cell>
-        <md-table-cell md-label="City">{{ item.city }}</md-table-cell>
-        <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
+      <!-- <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell>{{ item.name }}</md-table-cell>
+        <md-table-cell>{{ item.country }}</md-table-cell>
+        <md-table-cell>{{ item.city }}</md-table-cell>
+        <md-table-cell>{{ item.salary }}</md-table-cell>
+      </md-table-row> -->
+      <md-table-row v-for="column of columns" :key="column.id">
+        <md-table-cell>{{ column.id }}</md-table-cell>
+        <!-- <md-table-cell>{{ item.country }}</md-table-cell>
+        <md-table-cell>{{ item.city }}</md-table-cell>
+        <md-table-cell>{{ item.salary }}</md-table-cell> -->
       </md-table-row>
     </md-table>
   </div>
 </template>
-
+<!-- md-label="Salary" -->
 <script>
 export default {
   name: "simple-table",
@@ -19,6 +25,13 @@ export default {
       type: String,
       default: "",
     },
+    columns: {},
+  },
+  mounted() {
+    console.log(
+      123,
+      this.columns.map((el) => el)
+    );
   },
   data() {
     return {

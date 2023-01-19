@@ -2,8 +2,8 @@
   <VueDragResize
     v-if="isOpen"
     :isActive="isOpen"
-    h="430"
-    w="600"
+    :h="h"
+    :w="w"
     v-on:resizing="resize"
     :parentLimitation="true"
     v-on:dragging="resize"
@@ -11,7 +11,7 @@
   >
     <div class="modalWrapper">
       <div class="modelActions">
-        <div class="modalTitle">Hoogte profiel</div>
+        <div class="modalTitle">{{ title }}</div>
         <div class="modalClose" @click="handleClose" />
       </div>
       <slot class="modalContent"></slot>
@@ -28,6 +28,9 @@ export default {
   props: {
     isOpen: Boolean,
     handleClose: Function,
+    w: Number,
+    h: Number,
+    title: String,
   },
 
   data() {
@@ -41,10 +44,6 @@ export default {
 
   components: {
     VueDragResize,
-  },
-
-  mounted() {
-    console.log(this.$refs);
   },
 
   methods: {
@@ -64,7 +63,7 @@ export default {
   color: #fff;
   height: 100%;
   cursor: grab;
-  overflow: hidden;
+  overflow-y: scroll;
   border-radius: 0 0 10px 10px;
 }
 

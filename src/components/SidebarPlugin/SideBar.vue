@@ -1,17 +1,12 @@
 <template>
   <div
-    :class="{hide: !$sidebar.showSidebar, sidebar: true} "
+    :class="{ hide: !$sidebar.showSidebar, sidebar: true }"
     :data-color="sidebarItemColor"
     :data-image="sidebarBackgroundImage"
     :style="sidebarStyle"
   >
-    <md-button
-      class="md-just-icon md-simple md-toolbar-toggle toggled"
-      @click="toggleSidebar"
-    >
-      <span class="icon-bar">10</span>
-      <span class="icon-bar">10</span>
-      <span class="icon-bar">10</span>
+    <md-button class="toggle burger" :class="{ rotate: !$sidebar.showSidebar }" @click="toggleSidebar">
+      <span class="icon-bar arrow"></span>
     </md-button>
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
@@ -33,12 +28,7 @@
       <md-list class="nav">
         <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
         <slot>
-          <sidebar-link
-            v-for="(link, index) in sidebarLinks"
-            :key="link.name + index"
-            :to="link.path"
-            :link="link"
-          >
+          <sidebar-link v-for="(link, index) in sidebarLinks" :key="link.name + index" :to="link.path" :link="link">
           </sidebar-link>
         </slot>
       </md-list>
@@ -97,14 +87,42 @@ export default {
   methods: {
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
-    },  
-  }
+    },
+  },
 };
 </script>
-<style>
+<style scoped lang="scss">
 @media screen and (min-width: 991px) {
   .nav-mobile-menu {
     display: none;
+  }
+}
+
+.burger {
+  position: absolute;
+  z-index: 10;
+  top: 73px;
+  right: -15px;
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  background-color: #fff !important;
+  border-radius: 50%;
+  margin: 0;
+
+  & .arrow {
+    border-radius: 1px;
+    width: 9px;
+    height: 9px;
+    border-top: 2px solid #171f33;
+    border-left: 2px solid #171f33;
+    transform: rotate(-45deg);
+    position: absolute;
+    left: -17.5px;
+  }
+
+  &.rotate {
+    transform: rotate(180deg);
   }
 }
 </style>

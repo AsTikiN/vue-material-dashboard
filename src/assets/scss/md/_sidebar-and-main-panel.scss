@@ -65,7 +65,8 @@
         position: relative;
         height: calc(100vh - 75px);
         overflow: auto;
-        width: 260px;
+        max-width: 260px;
+        width: 100%;
         z-index: 4;
 
         .dropdown .dropdown-backdrop{
@@ -341,14 +342,15 @@
 }
 
 .sidebar.hide {
-  max-width: 0;
+  max-width: 88px;
 }
 
-.sidebar,
+.sidebar-wrapper,
+.logo,
 .main-panel {
   overflow: hidden;
 }
 
 .main-panel.full-width {
-  width: 100%
+  width: calc(100% - 88px) 
 }

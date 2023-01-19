@@ -1,24 +1,14 @@
 <template>
   <div ref="mapWrapper">
     <div class="mapPageWrapper" id="app">
-      <Modal :isOpen="isOpen" :handleClose="handleCloseModal">
-        <Plotly
-          class="plotlyGraph"
-          @hover="handleHoverGraph"
-          :data="data"
-          :layout="layout2"
-          :display-mode-bar="false"
-        />
+      <Modal :isOpen="isOpen" :handleClose="handleCloseModal" :w="500" :h="300" title="Hoogte profiel">
+        <Plotly class="plotlyGraph" @hover="handleHoverGraph" :data="data" :layout="layout" :display-mode-bar="false" />
       </Modal>
 
-      <Modal :isOpen="isOpen" :handleClose="handleCloseModal">
-        <Plotly
-          class="plotlyGraph"
-          @hover="handleHoverGraph"
-          :data="data2"
-          :layout="layout2"
-          :display-mode-bar="false"
-        />
+      <Modal :isOpen="isTableOpen" :handleClose="handleCloseModal" :w="500" :h="300" title="Paths info">
+        <div class="modalTableWrapper">
+          <SimpleTable :columns="graphsData" />
+        </div>
       </Modal>
 
       <Map
@@ -36,13 +26,15 @@
 import Map from "../../components/Map/Map.vue";
 import Modal from "../../components/Modal/Modal.vue";
 import { Plotly } from "vue-plotly";
+import SimpleTable from "../../components/Tables/SimpleTable.vue";
 
 export default {
   name: "VueMaterialDashboardMapPage",
 
   data() {
     return {
-      isOpen: false,
+      isOpen: true,
+      isTableOpen: true,
       activePathId: null,
       graphsData: [],
       markerCoords: [6.040129727, 51.415623313],
@@ -55,36 +47,6 @@ export default {
           title: "Z-coordinaat(m)",
         },
       },
-
-      data2: [
-        {
-          type: "table",
-          // header: {
-          //   values: [["<b>EXPENSES</b>"], ["<b>Q1</b>"], ["<b>Q2</b>"], ["<b>Q3</b>"], ["<b>Q4</b>"]],
-          //   align: "center",
-          //   line: { width: 1, color: "black" },
-          //   fill: { color: "grey" },
-          //   font: { family: "Arial", size: 12, color: "white" },
-          // },
-          header: {
-            values: [["<b>EXPENSES</b>"]],
-            // align: "center",
-            // line: { width: 1, color: "black" },
-            // fill: { color: "grey" },
-            // font: { family: "Arial", size: 12, color: "white" },
-          },
-          cells: {
-            values: [[["Salaries"], [1200000], [1300000], [1300000], [1400000]]],
-            align: "left",
-            // line: { color: "black", width: 1 },
-            // font: { family: "Arial", size: 11, color: ["black"] },
-          },
-        },
-      ],
-
-      layout2: {
-        title: "123",
-      },
     };
   },
 
@@ -93,13 +55,13 @@ export default {
     Modal,
     // PathGraph,
     Plotly,
+    SimpleTable,
   },
 
   mounted() {
     fetch("graphPath.json")
       .then((res) => res.json())
       .then((data) => {
-        console.log(1212, data);
         this.graphsData = data;
       });
   },
@@ -125,7 +87,6 @@ export default {
 
   methods: {
     handleOpenModal(pathId) {
-      this.isOpen = true;
       this.activePathId = pathId;
     },
 
@@ -157,5 +118,9 @@ export default {
 
 .plotlyGraph {
   height: 100%;
+}
+
+.modalTableWrapper {
+  margin-top: 55px;
 }
 </style>
